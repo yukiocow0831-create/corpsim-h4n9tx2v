@@ -1,0 +1,156 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>中小法人の税金シミュレーター（福岡市・北九州市）</title>
+<style>
+body{margin:0;font-family:"Hiragino Kaku Gothic ProN","Noto Sans JP",Meiryo,sans-serif;font-size:19px;line-height:1.7;background:#fff8ec;color:#222}
+header{background:linear-gradient(135deg,#ff7a45,#ffb800);color:#fff;padding:18px 16px}
+header h1{margin:0;font-size:26px}header p{margin:4px 0 0;font-size:17px}
+main{max-width:860px;margin:auto;padding:12px}
+.card{background:#fff;border-radius:16px;padding:16px;margin:14px 0;box-shadow:0 2px 8px #0002;border-left:8px solid #3b82f6}
+.card.g{border-color:#10b981}.card.p{border-color:#a855f7}.card.r{border-color:#ef4444}.card.y{border-color:#f59e0b}
+h2{margin:0 0 8px;font-size:22px}h3{font-size:20px;margin:16px 0 4px;color:#1d4ed8}
+label{display:block;font-weight:bold;margin-top:12px}small{font-weight:normal;color:#555;font-size:15px}
+input,select{width:100%;box-sizing:border-box;font-size:21px;padding:10px;border:2px solid #94a3b8;border-radius:10px;background:#fff}
+input:focus,select:focus{border-color:#2563eb;outline:none}
+.row{display:flex;gap:10px}.row>div{flex:1}
+.chk{display:flex;align-items:center;gap:10px;font-weight:bold;margin-top:12px}.chk input{width:28px;height:28px}
+button.big{display:block;width:100%;font-size:24px;font-weight:bold;padding:16px;margin:18px 0;border:0;border-radius:14px;background:#16a34a;color:#fff;cursor:pointer}
+table{width:100%;border-collapse:collapse;font-size:18px}td{padding:7px 4px;border-bottom:1px solid #e5e7eb;vertical-align:top}
+td.v{text-align:right;white-space:nowrap;font-weight:bold}.f{display:block;font-size:15px;color:#555}
+.tot{font-size:26px;color:#b91c1c;font-weight:bold;text-align:center;margin:8px 0}
+.warn{background:#fef2f2;border:2px solid #ef4444;border-radius:12px;padding:12px;font-size:17px}
+.note{font-size:15px;color:#444}
+</style></head><body>
+<header><h1>🏢 中小法人の税金シミュレーター</h1><p>法人税・地方法人税・防衛特別法人税・法人住民税・法人事業税・中間申告（<b>目安です</b>）</p></header>
+<main>
+<div class="warn">⚠️ この計算は<b>目安です</b>。資本金1億円以下の中小法人（適用除外事業者・大法人の100%子会社等を除く）、本店1か所（福岡県内の1市・1区）、税額控除なしを前提とした概算です。実際の申告は必ず法令・申告書でご確認ください。</div>
+
+<div class="card"><h2>① 会社の情報</h2>
+<label>所在地（市）</label><select id="muni"><option value="fuk">福岡市</option><option value="kit">北九州市（門司区など）</option></select>
+<div class="row"><div><label>事業年度 開始日</label><input type="date" id="start" value="2026-04-01"></div><div><label>事業年度 終了日</label><input type="date" id="end" value="2027-03-31"></div></div>
+<label>資本金等の額（円）<small>1億円以下が対象</small></label><input id="cap" inputmode="numeric" value="10,000,000">
+<label>従業者数（役員含む・市内）</label><input id="emp" inputmode="numeric" value="10">
+</div>
+
+<div class="card g"><h2>② 利益と調整</h2>
+<label>税引前当期純利益（円）</label><input id="pre" inputmode="numeric" value="20,000,000">
+<h3>加算（＋）</h3>
+<div class="row"><div><label>交際費等の損金不算入額</label><input id="a1" inputmode="numeric" value="0"></div><div><label>役員賞与（損金不算入）</label><input id="a2" inputmode="numeric" value="0"></div></div>
+<div class="row"><div><label>減価償却超過額</label><input id="a3" inputmode="numeric" value="0"></div><div><label>その他加算（自由入力）</label><input id="a4" inputmode="numeric" value="0"></div></div>
+<h3>減算（－）</h3>
+<div class="row"><div><label>受取配当等の益金不算入額</label><input id="s1" inputmode="numeric" value="0"></div><div><label>その他減算（自由入力）</label><input id="s2" inputmode="numeric" value="0"></div></div>
+<label>繰越欠損金の残高（円）<small>中小法人は所得の100%まで控除</small></label><input id="nol" inputmode="numeric" value="0">
+<label class="chk"><input type="checkbox" id="nofuk"> 事業税の軽減税率を使わない<small>（資本金1,000万円以上かつ3都道府県以上に事務所がある場合）</small></label>
+</div>
+
+<div class="card p"><h2>③ 前期の情報（中間申告用）</h2>
+<div class="row"><div><label>前期の法人税額（確定・円）</label><input id="prev" inputmode="numeric" value="2,000,000"></div><div><label>前期の月数</label><input id="pm" inputmode="numeric" value="12"></div></div>
+<div class="row"><div><label>前期の事業税＋特別法人事業税<small>（任意）</small></label><input id="prevj" inputmode="numeric" value="0"></div><div><label>前期の住民税 法人税割（県＋市・任意）</label><input id="prevw" inputmode="numeric" value="0"></div></div>
+<label class="chk"><input type="checkbox" id="ext"> 申告期限の延長（1か月）の特例を受けている</label>
+</div>
+
+<button class="big" onclick="calc()">🧮 計算する</button>
+<div id="out"></div>
+<p class="note">主な根拠：国税庁No.5759（令和8年4月1日現在）、財務省 令和7年度税制改正（軽減税率の特例は令和9年3月31日までに開始する事業年度、所得10億円超は17%／防衛特別法人税は令和8年4月1日以後開始事業年度）、福岡県「法人の県民税」（超過課税は令和9年1月31日までに終了する事業年度）、福岡市「法人市民税について」、北九州市「税額の計算方法」・法人の市民税の課税の臨時特例に関する条例（超過課税は令和13年9月30日まで）。</p>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const IDS=['muni','start','end','cap','emp','pre','a1','a2','a3','a4','s1','s2','nol','prev','pm','prevj','prevw'],CHK=['nofuk','ext'];
+const num=id=>{const v=parseFloat(String($(id).value).replace(/[,，円\s]/g,''));return isNaN(v)?0:v};
+const yen=n=>Math.round(n).toLocaleString('ja-JP')+'円';
+const f1000=n=>Math.floor(Math.max(0,n)/1000)*1000, f100=n=>Math.floor(Math.max(0,n)/100)*100;
+const pct=r=>(Math.round(r*10000)/100)+'%';
+function pd(s){const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)}
+function addM(d,n){const r=new Date(d.getFullYear(),d.getMonth()+n,1);const last=new Date(r.getFullYear(),r.getMonth()+1,0).getDate();r.setDate(Math.min(d.getDate(),last));return r}
+function addD(d,n){const r=new Date(d);r.setDate(r.getDate()+n);return r}
+function monthsCeil(s,e){let m=0;while(addD(addM(s,m),0)<=e)m++;return m} // 1月未満切上げ
+function monthsFloor(s,e){let m=0;while(addD(addM(s,m+1),-1)<=e)m++;return Math.max(1,m)} // 均等割: 1月未満切捨て（1月未満は1月）
+function biz(d){const r=new Date(d);while(r.getDay()==0||r.getDay()==6)r.setDate(r.getDate()+1);return r}
+const W='日月火水木金土';
+const ds=d=>`${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日（${W[d.getDay()]}）`;
+const line=(k,v,f='')=>`<tr><td>${k}${f?`<span class="f">${f}</span>`:''}</td><td class="v">${v}</td></tr>`;
+// 均等割表
+const CITY={fuk:{name:'福岡市',kin:[[1e7,50000,120000],[1e8,156000,180000],[1e9,192000,480000],[5e9,492000,2100000],[Infinity,492000,3600000]]},
+            kit:{name:'北九州市（門司区など）',kin:[[1e7,60000,144000],[1e8,156000,180000],[1e9,192000,480000],[5e9,492000,2100000],[Infinity,492000,3600000]]}};
+const PREF=[[1e7,21000],[1e8,52500],[1e9,136500],[5e9,567000],[Infinity,840000]];
+function calc(){
+ save();
+ const muni=$('muni').value,C=CITY[muni],s=pd($('start').value),e=pd($('end').value);
+ if(!(e>s)){$('out').innerHTML='<div class="warn">事業年度の日付を確認してください。</div>';return}
+ const M=monthsCeil(s,e),Mk=monthsFloor(s,e),cap=num('cap'),emp=num('emp');
+ const add=num('a1')+num('a2')+num('a3')+num('a4'),sub=num('s1')+num('s2');
+ const pre=num('pre'),before=pre+add-sub,nol=Math.min(Math.max(0,num('nol')),Math.max(0,before));
+ const inc=f1000(before-nol);
+ // 法人税
+ const b8=8e6*M/12,lowR=(inc>1e9*M/12)?0.17:0.15,lowStart=s<new Date(2027,3,1);
+ const lr=lowStart?lowR:0.19;
+ const lowPart=Math.min(inc,Math.floor(b8/1000)*1000),hiPart=Math.max(0,inc-lowPart);
+ const hojin=f100(lowPart*lr+hiPart*0.232),hb=f1000(hojin);
+ const chiho=f100(hb*0.103);
+ // 防衛特別法人税
+ const boei_on=s>=new Date(2026,3,1),ded=5e6*M/12,boei=boei_on?f100(Math.max(0,hb-ded)*0.04):0;
+ // 県民税
+ const big=cap>1e8||hb>1e7*M/12;
+ const kr=big?0.018:0.010,kenW=f100(hb*kr);
+ const kenK=f100((PREF.find(x=>cap<=x[0])[1])*Mk/12);
+ // 市民税
+ let sr;if(muni=='fuk')sr=cap>1e7?0.084:0.076;else sr=(cap>1e8||hb>1e7*M/12)?0.082:0.060;
+ const shiW=f100(hb*sr);const row=C.kin.find(x=>cap<=x[0]);const shiKy=emp>50?row[2]:row[1];const shiK=f100(shiKy*Mk/12);
+ // 事業税
+ const nf=$('nofuk').checked;let jg,jf;
+ if(nf){jg=f100(inc*0.07);jf=`${yen(inc)} × 7.0%（軽減税率不適用）`}
+ else{const t1=Math.floor(4e6*M/12/1000)*1000,t2=Math.floor(8e6*M/12/1000)*1000;
+  const p1=Math.min(inc,t1),p2=Math.min(Math.max(0,inc-t1),t2-t1),p3=Math.max(0,inc-t2);
+  jg=f100(p1*0.035+p2*0.053+p3*0.07);jf=`${yen(p1)}×3.5% ＋ ${yen(p2)}×5.3% ＋ ${yen(p3)}×7.0%`}
+ const tok=f100(jg*0.37);
+ const kok=hojin+chiho+boei,ju=kenW+kenK+shiW+shiK,ji=jg+tok,tot=kok+ju+ji;
+ const incomeTaxes=tot-kenK-shiK;
+ // 実効税率（表面）
+ const eff=inc>0?incomeTaxes/inc:0;
+ // 期限
+ const fin=addD(addM(addD(e,1),2),-1),finx=addD(addM(addD(e,1),3),-1);
+ const mid=addD(addM(s,8),-1);
+ const pm=num('pm')||12,prev=num('prev'),base=prev*6/pm;
+ const need=M>6&&base>100000;
+ const mH=f100(base),mC=f100(f1000(base)*0.103),mJ=f100(num('prevj')*6/pm),mW=f100(num('prevw')*6/pm);
+ const mK=f100((PREF.find(x=>cap<=x[0])[1])*6/12)+f100(shiKy*6/12);
+ let h=`<div class="card r"><h2>📊 結果（${C.name}・事業年度${M}か月）</h2>
+ <div class="tot">税金の合計（目安） ${yen(tot)}</div>
+ <table>${line('税引前当期純利益',yen(pre))}${line('＋ 加算',yen(add))}${line('－ 減算',yen(sub))}${line('－ 繰越欠損金の控除',yen(nol),'中小法人：控除前所得の100%まで')}
+ ${line('<b>課税所得</b>',yen(inc),'千円未満切捨て')}</table>
+ <h3>🇯🇵 国税</h3><table>
+ ${line('<b>法人税</b>',yen(hojin),`${yen(lowPart)}×${pct(lr)} ＋ ${yen(hiPart)}×23.2%${lr==0.17?'（所得10億円超のため17%）':''}${!lowStart?'（軽減特例の期限後：本則19%）':''}`)}
+ ${line('<b>地方法人税</b>',yen(chiho),`${yen(hb)} × 10.3%`)}
+ ${line('<b>防衛特別法人税</b>',yen(boei),boei_on?`（${yen(hb)} − 基礎控除${yen(ded)}）× 4%`:'令和8年4月1日より前に開始の事業年度は対象外')}</table>
+ <h3>🏯 福岡県 法人県民税</h3><table>
+ ${line('法人税割',yen(kenW),`${yen(hb)} × ${pct(kr)}${big?'（法人税額が年1,000万円超等のため超過税率）':''}`)}
+ ${line('均等割（森林環境税含む）',yen(kenK),`年${yen(PREF.find(x=>cap<=x[0])[1])} × ${Mk}/12`)}</table>
+ <h3>🏙️ ${C.name} 法人市民税</h3><table>
+ ${line('法人税割',yen(shiW),`${yen(hb)} × ${pct(sr)}`)}
+ ${line('均等割',yen(shiK),`年${yen(shiKy)}（従業者${emp>50?'50人超':'50人以下'}）× ${Mk}/12`)}</table>
+ <h3>🏭 法人事業税（福岡県）</h3><table>
+ ${line('法人事業税（所得割）',yen(jg),jf)}${line('特別法人事業税',yen(tok),`${yen(jg)} × 37%`)}</table>
+ <h3>🧾 まとめ</h3><table>${line('国税 計',yen(kok))}${line('住民税 計',yen(ju))}${line('事業税 計',yen(ji))}${line('<b>合計</b>',yen(tot))}
+ ${line('税負担率（所得に係る税 ÷ 課税所得）',inc>0?pct(eff):'—','均等割を除く')}
+ ${line('税引前利益に対する負担率',pre>0?pct(tot/pre):'—','均等割を含む')}</table></div>
+ <div class="card y"><h2>📅 申告・納付の期限</h2><table>`;
+ if(M<=6)h+=line('中間申告','不要','事業年度が6か月以下');
+ else if(!need)h+=line('中間申告','不要',`前期法人税額×6/${pm} = ${yen(base)}（10万円以下）`);
+ else{h+=line(`<b>中間申告 期限 ${ds(biz(mid))}</b>`,'','期首から6か月経過後2か月以内（土日は翌月曜。祝日は別途確認）')
+ +line('法人税（予定）',yen(mH),`${yen(prev)} × 6 / ${pm}`)+line('地方法人税（予定）',yen(mC),`${yen(f1000(base))} × 10.3%`)
+ +line('防衛特別法人税（予定）',s>=new Date(2027,3,1)?'前期実績から計算':'0円','中間申告は令和9年4月1日以後開始の事業年度から')
+ +line('住民税 均等割（県＋市・6か月分）',yen(mK))+line('住民税 法人税割（予定）',yen(mW),'前期の法人税割×6/前期月数')
+ +line('事業税＋特別法人事業税（予定）',yen(mJ),'前期の額×6/前期月数')
+ +line('<b>中間納付 合計</b>',yen(mH+mC+mK+mW+mJ))}
+ h+=line(`<b>確定申告・納付 期限 ${ds(biz(fin))}</b>`,'','期末の翌日から2か月以内');
+ if($('ext').checked)h+=line(`申告期限（延長後） ${ds(biz(finx))}`,'','※納付期限は延びません。2か月後までに納付しないと利子税がかかります');
+ h+=line('確定で納める額（目安）',yen(tot-(need?mH+mC+mK+mW+mJ:0)),'合計 − 中間納付額')+`</table><p class="note">土日のみ翌営業日に繰り下げています。祝日・年末年始はご確認ください。</p></div>`;
+ $('out').innerHTML=h;$('out').scrollIntoView({behavior:'smooth'});
+}
+function save(){const o={};IDS.forEach(i=>o[i]=$(i).value);CHK.forEach(i=>o[i]=$(i).checked);try{localStorage.setItem('corpTaxSim',JSON.stringify(o))}catch(e){}}
+function load(){try{const o=JSON.parse(localStorage.getItem('corpTaxSim')||'null');if(!o)return;IDS.forEach(i=>{if(o[i]!=null)$(i).value=o[i]});CHK.forEach(i=>$(i).checked=!!o[i])}catch(e){}}
+document.querySelectorAll('input[inputmode=numeric]').forEach(el=>el.addEventListener('blur',()=>{const v=num(el.id);el.value=v.toLocaleString('ja-JP')}));
+document.querySelectorAll('input,select').forEach(el=>el.addEventListener('change',save));
+load();
+</script></body></html>
